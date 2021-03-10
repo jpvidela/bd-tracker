@@ -54,7 +54,7 @@ def main():
                 >>> {order['Status']}.\n\
                 >>> Last Updated: {order['Updated']}\n"
             f.write(message)
-            print(message)
+            print(f"\n{message}")
 
 main()
     

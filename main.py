@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-
+import csv
 
 def makeRequest(url, data):
 # Makes requests and returns content
@@ -18,6 +18,21 @@ def parse(content):
     ans['Date'] = mainContent[0].get_text().strip().split(' ')[0]
     ans['Status'] = main[1].get_text().strip()
     return ans
+
+def readIDs(csv_file):
+    with open(csv_file, 'r') as f:
+        csv_reader = csv.reader(f, delimiter = ";")
+        rowCount = 0
+        orders = []
+        # Store Order Name, Tracking ID
+        for row in csv_reader:
+            if rowCount > 0:
+                orders.append({
+                    'Name': row[0],
+                    'TrackingID': row[1]
+                })
+            rowCount += 1
+    return orders
 
 
 url = "https://postnl.post/details/"

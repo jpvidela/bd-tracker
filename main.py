@@ -14,12 +14,12 @@ def parse(content):
     ans = {}
     soup = BeautifulSoup(content, 'html.parser')
     # Here's all the info I need
-    mainContent = soup.find(id="datatables").find(class_="first_ detail").find_all("td")
-    ans['Date'] = mainContent[0].get_text().strip().split(' ')[0]
-    ans['Status'] = main[1].get_text().strip()
+    mainContent = soup.find(id="datatables").find(class_="first detail").find_all("td")
+    ans['Datetime'] = mainContent[0].get_text().strip()
+    ans['Status'] = mainContent[1].get_text().strip()
     return ans
 
-def readIDs(csv_file):
+def getOrders(csv_file):
     with open(csv_file, 'r') as f:
         csv_reader = csv.reader(f, delimiter = ";")
         rowCount = 0
@@ -34,12 +34,18 @@ def readIDs(csv_file):
             rowCount += 1
     return orders
 
+def main():
+    url = "https://postnl.post/details/"
+    myOrders = getOrders('orders.csv')
+    for order in myOrders:
+        # The webpage requires tracking ID in this format
+        request_data = {'barcodes': order['TrackingID']}
+        # Parsing html data and getting the desired info
+        orderInfo = parse(makeRequest(url, request_data))
+        # Updating my orders
+        order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
+        print(f"{order['Name']}: {order['Status']}. Last Updated: {order['Updated']}")
 
-url = "https://postnl.post/details/"
-trackingIDs = ["RU866553307NL", "RU806590792NL"]
-
-for id in trackingIDs:
-    # The webpage requires tracking ID in this format
-    request_data = {'barcodes': id}
-    idStatus = parse(makeRequest(url, request_data))
+main()
+    
 

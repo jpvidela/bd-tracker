@@ -49,7 +49,9 @@ def main():
         orderInfo = parse(makeRequest(url, request_data))
         # Updating my orders
         order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
-        print(f"{order['Name']}: {order['Status']}. Last Updated: {order['Updated']}")
+        print(f"\n{order['Name']}:\n\
+            >>> {order['Status']}.\n\
+            >>> Last Updated: {order['Updated']}")
 
 main()
     

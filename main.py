@@ -42,16 +42,19 @@ def getOrders(csv_file):
 def main():
     url = "https://postnl.post/details/"
     myOrders = getOrders('orders.csv')
-    for order in myOrders:
-        # The webpage requires tracking ID in this format
-        request_data = {'barcodes': order['TrackingID']}
-        # Parsing html data and getting the desired info
-        orderInfo = parse(makeRequest(url, request_data))
-        # Updating my orders
-        order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
-        print(f"\n{order['Name']}:\n\
-            >>> {order['Status']}.\n\
-            >>> Last Updated: {order['Updated']}")
+    with open('Output.txt', 'w') as f:
+        for order in myOrders:
+            # The webpage requires tracking ID in this format
+            request_data = {'barcodes': order['TrackingID']}
+            # Parsing html data and getting the desired info
+            orderInfo = parse(makeRequest(url, request_data))
+            # Updating my orders
+            order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
+            message = f"{order['Name']}:\n\
+                >>> {order['Status']}.\n\
+                >>> Last Updated: {order['Updated']}\n"
+            f.write(message)
+            print(message)
 
 main()
     

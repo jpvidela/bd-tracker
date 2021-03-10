@@ -3,6 +3,11 @@ from bs4 import BeautifulSoup
 import json
 import csv
 
+''' Given a CSV file with Order Names and Tracking IDs, will make a POST request
+    to post.nl with each tracking ID **separately** and parse the answer content, 
+    retrieving from the last status update: Datetime and status message. 
+'''
+
 def makeRequest(url, data):
 # Makes requests and returns content
     # Requests.post requiere la url y los datos a enviar.

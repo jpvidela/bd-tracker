@@ -52,12 +52,9 @@ def main():
             # Updating my orders
             order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
             # \ is a line-break for python code
-            message = f"\
-                {order['Name']}:\n\
-                >>> {order['Status']}.\n\
-                >>> Last Updated: {order['Updated']}\n"
+            message = f"{order['Name']}: {order['Status']} ({order['Updated']})\n"
             f.write(message)
-            print(f"\n{message}")
+            print(f"\n >>> {message}")
 
 main()
     

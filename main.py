@@ -25,11 +25,12 @@ def parse(content):
     return ans
 
 def getOrders(csv_file):
+    # Reads csv file containing [Order Description ; TrackingID]
     with open(csv_file, 'r') as f:
         csv_reader = csv.reader(f, delimiter = ";")
         rowCount = 0
         orders = []
-        # Store Order Name, Tracking ID
+        # Store each (Order Description, Tracking ID) pair as dictionaries inside list
         for row in csv_reader:
             if rowCount > 0:
                 orders.append({
@@ -50,7 +51,9 @@ def main():
             orderInfo = parse(makeRequest(url, request_data))
             # Updating my orders
             order.update({'Status': orderInfo['Status'], 'Updated': orderInfo['Datetime']})
-            message = f"{order['Name']}:\n\
+            # \ is a line-break for python code
+            message = f"\
+                {order['Name']}:\n\
                 >>> {order['Status']}.\n\
                 >>> Last Updated: {order['Updated']}\n"
             f.write(message)
